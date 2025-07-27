@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Weapons.Melee.EnergySword;
 
@@ -37,4 +38,22 @@ public sealed partial class EnergySwordComponent : Component
     /// </summary>
     [DataField]
     public float CycleRate = 1f;
+}
+
+[NetSerializable, Serializable]
+public enum ESColorPickerMenu : byte
+{
+    Key,
+}
+
+[Serializable, NetSerializable]
+public sealed class ESColorChangedMessage(Color color) : BoundUserInterfaceMessage
+{
+    public Color Color = color;
+}
+
+[Serializable, NetSerializable]
+public sealed class ESHackedStateChangedMessage(bool state) : BoundUserInterfaceMessage
+{
+    public bool State = state;
 }
