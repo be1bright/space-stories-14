@@ -13,6 +13,7 @@ public sealed class EnergySwordSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     public override void Initialize()
     {
@@ -20,7 +21,37 @@ public sealed class EnergySwordSystem : EntitySystem
 
         SubscribeLocalEvent<EnergySwordComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<EnergySwordComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<EnergySwordComponent, ESHackedStateChangedMessage>(OnHackedStateChanged);
+        SubscribeLocalEvent<EnergySwordComponent, ESColorChangedMessage>(OnColorChanged);
     }
+
+    private void OnHackedStateChanged(Entity<EnergySwordComponent> entity, ref ESHackedStateChangedMessage args)
+    {
+        entity.Comp.Hacked = args.State;
+
+        if (entity.Comp.Hacked)
+        {
+            var rgb = EnsureComp<RgbLightControllerComponent>(entity);
+            _rgbSystem.SetCycleRate(entity, entity.Comp.CycleRate, rgb);
+        }
+        else
+            RemComp<RgbLightControllerComponent>(entity);
+        Dirty(entity);
+    }
+
+    private void OnColorChanged(Entity<EnergySwordComponent> entity, ref ESColorChangedMessage args)
+    {
+        if (entity.Comp.ActivatedColor == args.Color)
+            return;
+        entity.Comp.ActivatedColor = args.Color;
+        Dirty(entity);
+
+        if (!TryComp(entity, out AppearanceComponent? appearanceComponent))
+            return;
+
+        _appearance.SetData(entity, ToggleableVisuals.Color, entity.Comp.ActivatedColor, appearanceComponent);
+    }
+
     // Used to pick a random color for the blade on map init.
     private void OnMapInit(Entity<EnergySwordComponent> entity, ref MapInitEvent args)
     {
@@ -45,16 +76,8 @@ public sealed class EnergySwordSystem : EntitySystem
         if (!_toolSystem.HasQuality(args.Used, SharedToolSystem.PulseQuality))
             return;
 
+        _ui.TryToggleUi(entity.Owner, ESColorPickerMenu.Key, args.User);
         args.Handled = true;
-        entity.Comp.Hacked = !entity.Comp.Hacked;
-
-        if (entity.Comp.Hacked)
-        {
-            var rgb = EnsureComp<RgbLightControllerComponent>(entity);
-            _rgbSystem.SetCycleRate(entity, entity.Comp.CycleRate, rgb);
-        }
-        else
-            RemComp<RgbLightControllerComponent>(entity);
 
         Dirty(entity);
     }
