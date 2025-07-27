@@ -86,6 +86,9 @@ namespace Content.Client.Stylesheets
 
         public const string StyleClassButtonHelp = "HelpButton";
 
+        // Stories-EnergySwordColorPicker
+        public const string StyleClassButtonSecret = "SecretButton";
+
         public const string StyleClassPopupMessageSmall = "PopupMessageSmall";
         public const string StyleClassPopupMessageSmallCaution = "PopupMessageSmallCaution";
         public const string StyleClassPopupMessageMedium = "PopupMessageMedium";
@@ -1589,6 +1592,7 @@ namespace Content.Client.Stylesheets
                 Element<TextureButton>().Class(FancyWindow.StyleClassWindowHelpButton).Pseudo(ContainerButton.StylePseudoClassPressed)
                     .Prop(Control.StylePropertyModulateSelf, Color.FromHex("#753131")),
 
+
                 //The lengths you have to go through to change a background color smh
                 Element<PanelContainer>().Class("PanelBackgroundBaseDark")
                     .Prop("panel", new StyleBoxTexture(BaseButtonOpenBoth) { Padding = default })
@@ -1644,6 +1648,20 @@ namespace Content.Client.Stylesheets
 
                 Element<LineEdit>().Class("PaperLineEdit")
                     .Prop(LineEdit.StylePropertyStyleBox, new StyleBoxEmpty()),
+
+                // Stories-Start
+                Element<Button>().Class("SecretButton")
+                    .Prop(Control.StylePropertyModulateSelf, Color.Transparent),
+
+                Element<Button>().Class("SecretButton").Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(Control.StylePropertyModulateSelf, Color.Transparent),
+
+                Element<Button>().Class("SecretButton").Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.Transparent),
+
+                Element<Button>().Class("SecretButton").Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(Control.StylePropertyModulateSelf, Color.Transparent),
+                // Stories-End
 
                 // Red Button ---
                 Element<Button>().Class("ButtonColorRed")
