@@ -32,11 +32,11 @@ namespace Content.Client._Stories.Weapon.Melee.EnergySword
 
             _window.OnConfirmButtonPressed += color =>
             {
-                SendMessage(new ESColorChangedMessage(color));
+                SendPredictedMessage(new ESColorChangedMessage(color));
             };
             _window.OnSecretButtonPressed += state =>
             {
-                 SendMessage(new ESHackedStateChangedMessage(state));
+                 SendPredictedMessage(new ESHackedStateChangedMessage(state));
             };
         }
     }
