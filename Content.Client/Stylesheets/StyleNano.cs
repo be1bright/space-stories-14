@@ -1607,6 +1607,7 @@ namespace Content.Client.Stylesheets
                     .Prop(TextureRect.StylePropertyTexture, resCache.GetTexture("/Textures/Interface/Nano/ntlogo.svg.png"))
                     .Prop(Control.StylePropertyModulateSelf, Color.FromHex("#757575")),
 
+
                 Element<Label>().Class("WindowFooterText")
                     .Prop(Label.StylePropertyFont, notoSans8)
                     .Prop(Label.StylePropertyFontColor, Color.FromHex("#757575")),
@@ -1661,6 +1662,10 @@ namespace Content.Client.Stylesheets
 
                 Element<Button>().Class("SecretButton").Pseudo(ContainerButton.StylePseudoClassPressed)
                     .Prop(Control.StylePropertyModulateSelf, Color.Transparent),
+
+                Element<TextureRect>().Class("SyndicateLogo")
+                    .Prop(TextureRect.StylePropertyTexture, resCache.GetTexture("/Textures/Interface/Paper/paper_heading_syndicate_logo_white.svg.96dpi.png"))
+                    .Prop(Control.StylePropertyModulateSelf, Color.FromHex("#757575")),
                 // Stories-End
 
                 // Red Button ---
